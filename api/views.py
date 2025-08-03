@@ -10,13 +10,11 @@ from rest_framework.views import APIView
 from employees.models import Employee
 from rest_framework import generics, mixins
 from rest_framework import viewsets
-# from blogs.models import Blog, Comment, Album, Track
-# from blogs.serializers import BlogSerializer, CommentSerializer, AlbumSerializer, TrackSerializer
-# from blogs.paginations import CustomPagination
-# from django_filters.rest_framework import DjangoFilterBackend
-# from .filters import EmployeeFilter
-# from rest_framework import filters
-
+from blogs.models import Blog, Comment
+from blogs.serializers import BlogSerializer, CommentSerializer
+from blogs.paginations import CustomPagination
+from .filters import EmployeeFilter
+from rest_framework.filters import SearchFilter , OrderingFilter
 # Create your views here.
 @api_view(['GET' , 'POST'])
 def studentsView(request):
@@ -181,3 +179,33 @@ def studentDetailView(request,pk):
 class EmployeeViewset(viewsets.ModelViewSet):
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
+    pagination_class = CustomPagination
+    # filterset_fields = ['designation']
+    filterset_class = EmployeeFilter
+
+
+
+class BlogsView(generics.ListCreateAPIView):
+    queryset = Blog.objects.all()
+    serializer_class = BlogSerializer
+    filter_backends = [SearchFilter , OrderingFilter]
+    search_fields = ['^blog_title' , 'blog_body']
+    ordering_fields = ['blog_title']
+
+
+class BlogDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Blog.objects.all()
+    serializer_class = BlogSerializer
+    lookup_field = 'pk'
+
+
+
+class CommentsView(generics.ListCreateAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+
+
+class CommentDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    lookup_field = 'pk'
