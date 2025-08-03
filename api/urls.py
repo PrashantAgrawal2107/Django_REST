@@ -3,15 +3,15 @@ from . import views
 from rest_framework.routers import DefaultRouter
 
 
-# router = DefaultRouter()
-# router.register('employees', views.EmployeeViewset, basename='employeedirectories')
+router = DefaultRouter()
+router.register('employees', views.EmployeeViewset, basename='employeedirectories')
 
 urlpatterns = [
     path('students/' , views.studentsView),
     path('student/<int:pk>/' , views.studentDetailView),
 
-    path('employees/' , views.EmployeeList.as_view()),
-    path('employees/<int:pk>/' , views.EmployeeDetail.as_view())
+    # path('employees/' , views.EmployeeList.as_view()),
+    # path('employees/<int:pk>/' , views.EmployeeDetail.as_view())
 
-    #  path('', include(router.urls)),
+     path('', include(router.urls)),
 ]
